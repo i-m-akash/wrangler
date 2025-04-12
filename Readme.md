@@ -1,74 +1,78 @@
-Byte Size & Time Duration Parsers with aggregate-stats Directive
-This enhancement adds native support for parsing byte size and time duration units in CDAP Wrangler, along with a new directive called aggregate-stats that can compute total/average values across records.
+📦 Byte Size & Time Duration Parsers with aggregate-stats Directive
 
-✨ Features
-✅ New Token Types
-Byte Size Units Supported: B, KB, MB, GB, TB, PB, KiB, MiB, GiB
+This enhancement introduces native support for parsing byte size and time duration units in CDAP Wrangler. It also includes a powerful new directive: aggregate-stats — allowing computation of total and average values across records.
 
+---
 
-Time Duration Units Supported: ms, s, sec, m, min, h
+## ✨ Features
 
+### ✅ New Token Types
 
-These tokens can now be used directly in directive arguments.
+- Byte Size Units Supported:  
+  B, KB, MB, GB, TB, PB, KiB, MiB, GiB
 
-🧠 Usage Example
+- Time Duration Units Supported:  
+  ms, s, sec, m, min, h
+
+These tokens are now fully supported as directive arguments.
+
+---
+
+## 🧠 Usage Example
+
+```wrangler
 aggregate-stats :data_transfer_size :response_time total_size_mb total_time_sec
+```
 
-Parameter
-Description
-:data_transfer_size
-Source column containing byte size values (e.g. 10MB)
-:response_time
-Source column containing duration values (e.g. 150ms)
-total_size_mb
-Output column name for total size in MB
-total_time_sec
-Output column name for total time in seconds
+| Parameter            | Description                                                  |
+|---------------------|--------------------------------------------------------------|
+| :data_transfer_size | Column with byte size values (e.g., "10MB", "512KiB")         |
+| :response_time      | Column with duration values (e.g., "150ms", "2.1s", "1min")   |
+| total_size_mb       | Output column: total size (converted to MB)                   |
+| total_time_sec      | Output column: total time (converted to seconds)              |
 
+---
 
-🧮 Units Conversion
-ByteSize Conversion Table
-Unit
-Multiplier
-B
-1
-KB
-1,000
-MB
-1,000,000
-GB
-1,000,000,000
-TB
-1,000,000,000,000
-PB
-1,000,000,000,000,000
+## 🧮 Units Conversion
 
-TimeDuration Conversion Table
-Unit
-Multiplier (to ms)
-ms
-1
-s/sec
-1,000
-m/min
-60,000
-h
-3,600,000
+### Byte Size Conversion Table
 
+| Unit | Multiplier      |
+|------|-----------------|
+| B    | 1               |
+| KB   | 1,000           |
+| MB   | 1,000,000       |
+| GB   | 1,000,000,000   |
+| TB   | 1,000,000,000,000 |
+| PB   | 1,000,000,000,000,000 |
+| KiB  | 1,024           |
+| MiB  | 1,048,576       |
+| GiB  | 1,073,741,824   |
 
-🧪 Test Coverage
-✅ Unit Tests
-ByteSizeTest.java – Validates parsing and conversion of byte size strings.
+### Time Duration Conversion Table
 
+| Unit  | Multiplier (to ms) |
+|-------|---------------------|
+| ms    | 1                   |
+| s/sec | 1,000               |
+| m/min | 60,000              |
+| h     | 3,600,000           |
 
-TimeDurationTest.java – Validates parsing and conversion of time duration strings.
+---
 
+## 🧪 Test Coverage
 
-AggregateStatsTest.java – End-to-end test verifying correct aggregation results.
+✅ Unit Tests Included:
 
+- ByteSizeTest.java — Validates parsing and conversion of byte size strings  
+- TimeDurationTest.java — Validates parsing and conversion of time duration strings  
+- AggregateStatsTest.java — End-to-end test validating correct aggregation output
 
+---
 
-📁 File Structure
+## 📁 File Structure
+
+```
 wrangler-api/
 └── parser/
     ├── ByteSize.java
@@ -81,31 +85,43 @@ wrangler-core/
 └── plugin/AggregateStats.java
 
 wrangler-core/
-└── src/test/java/...
+└── src/test/java/
     ├── ByteSizeTest.java
     ├── TimeDurationTest.java
     └── AggregateStatsTest.java
+```
 
+---
 
-🤖 AI Assistance Log
-Prompts used during development are recorded in prompts.txt in the root directory.
+## 🤖 AI Assistance Log
 
-🚀 How to Build
+Development of this feature included assistance via large language models. Prompts and responses are recorded in prompts.txt.
+
+---
+
+## 🚀 Build Instructions
+
+Use Maven to build the project:
+
+```bash
 mvn clean install
+```
 
+---
 
-✅ Sample Output
-Given a dataset:
-data_transfer_size
-response_time
-10MB
-150ms
-5MB
-2.1s
+## ✅ Sample Output
 
-Output after aggregate-stats:
-total_size_mb
-total_time_sec
-15.0
-2.25
+Given Input:
+
+| data_transfer_size | response_time |
+|--------------------|---------------|
+| 10MB               | 150ms         |
+| 5MB                | 2.1s          |
+
+After Running aggregate-stats:
+
+| total_size_mb | total_time_sec |
+|---------------|----------------|
+| 15.0          | 2.25           |
+
 
