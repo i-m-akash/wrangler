@@ -1,6 +1,5 @@
 📦 Byte Size & Time Duration Parsers with aggregate-stats Directive
-
-This enhancement introduces native support for parsing byte size and time duration units in CDAP Wrangler. It also includes a powerful new directive: aggregate-stats — allowing computation of total and average values across records.
+This enhancement adds native support for parsing byte size and time duration units in CDAP Wrangler, along with a new directive called aggregate-stats that can compute total/average values across records.
 
 ---
 
